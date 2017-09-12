@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<link href="css/myCSS.css" rel="stylesheet" type="text/css">
+
+<script>
+var die1;
+var die2;
+var sum = 0;
+var point = 0;
+var rollCount = 0;
+var winCount = 0;
+var loseCount = 0;
+var checkWinResult = false;
+var checkLoseResult = false;
+//-----------------------------------------------------------
+
+function crap() {	// main funtion
+
+    if (rollCount == 0) {	// roll first time
+        sum = roll(); 
+ 
+        if(sum == 2 || sum == 3 || sum == 12){
+        	win();
+        }else
+        	if(sum == 7 || sum == 11){
+        		lose();
+        	}else {							//need roll again
+        		point = sum;
+        		document.getElementById("pointText").value = point; // show point
+        	}   
+    }else
+    	if (rollCount != 0) {	//roll NO first time
+    		rollAgain();
+        }
+}
+//-----------------------------------------------------------------------
+function roll(){
+	rollCount++; 	// roll counter 
+	
+    var die1 = Math.floor((Math.random() * 6) + 1);	// rolling the first dice
+    var die2 = Math.floor((Math.random() * 6) + 1);	// rolling the second dice
+    
+    var saund = new Audio("audio/zar.mp3");
+    saund.play();
+    
+    sum = die1 + die2;
+	
+    if(die1 == 1)		
+    	document.getElementById("Die1").src = "images/dice_1.png";
+    	
+    if(die1 == 2)
+    	document.getElementById("Die1").src = "images/dice_2.png";
+    
+    if(die1 == 3)
+    	document.getElementById("Die1").src = "images/dice_3.png";
+    	
+    if(die1 == 4)
+    	document.getElementById("Die1").src = "images/dice_4.png";
+    	
+    if(die1 == 5)
+    	document.getElementById("Die1").src = "images/dice_5.png";
+    	
+    if(die1 == 6)
+    	document.getElementById("Die1").src = "images/dice_6.png";
+    
+    switch(die2){		
+    case 1:
+    	document.getElementById("Die2").src = "images/dice_1.png";
+    	break;
+    case 2:
+    	document.getElementById("Die2").src = "images/dice_2.png";
+    	break;
+    case 3:
+    	document.getElementById("Die2").src = "images/dice_3.png";
+    	break;
+    case 4:
+    	document.getElementById("Die2").src = "images/dice_4.png";
+    	break;
+    case 5:
+    	document.getElementById("Die2").src = "images/dice_5.png";
+    	break;
+    case 6:
+    	document.getElementById("Die2").src = "images/dice_6.png";
+    	break;
+    default:
+    	break;
+    }
+    	
+    document.getElementById("sumText").value = sum;
+
+    return sum;	// return sum to use in crap() function
+}
+//-------------------------------------------------------------------
+function rollAgain() {	//function roll again
+    sum = roll();
+
+    if (sum == 7) {
+        lose();
+    }
+    else if (point == sum) {
+        win(); 
+    }
+}
+//--------------------------------------------------------------------
+function win() {	//function show win the game
+    document.getElementById("roll").innerHTML = "You Win"; // change text of roll button
+    document.getElementById("roll").disabled = true;
+    var saund = new Audio("audio/win.mp3");
+    saund.play();
+    winCount++;
+    document.getElementById("winText").value = winCount;
+    
+}
+//---------------------------------------------------------------------
+function lose() {	//function show lose the game
+	document.getElementById("roll").innerHTML = "You Lose"; // change text of roll button
+	document.getElementById("roll").disabled = true;
+	var saund = new Audio("audio/lose.mp3");
+    saund.play();
+    loseCount++;
+    document.getElementById("loseText").value = loseCount; 
+}
+</script>
+<style type="text/css">
+	div{
+		background-color: powderblue;
+		border: 0px solid black;
+		width: 600px;
+		height: 100px;
+		margin: 0px;
+	}
+	span{
+		background-color:coral;
+		border: 0px solid black;
+		width: 300px;
+		font-size: 20px;
+	}
+	button {
+		background-color: greenyellow;
+	}
+</style>
+</head>
+<body>
+	<div>
+		<h2 align="center">In first raund: 2, 3, 12 WIN and 7, 11 LOSE</h2>
+		<h2 align="center">In second raund: If drop similar point WIN and 7 LOSE</h2>
+	</div>
+	
+			
+	<div style="height: 200px;">
+		<table><tr>
+			<td><div align="center" style="height: 180px; width: 180px">
+			<img id="Die1" alt="" src="" style="height: 100px; width: 100px"/></div></td>
+		
+			<td><div align="center" style="height: 180px; width: 180px">
+			<img id="Die2" alt="" src="" style="height: 100px; width: 100px"/></div></td>
+			
+			<td><div id="Sum" align="center" style="height: 180px; width: 180px">
+			<span>Sum</span><br/><input id="sumText" size="20px" type="text" value="0"></div></td>
+		</tr></table>
+	</div>
+	
+	<div>
+		<table><tr>
+			<td><div id="Point" style="width: 180px; height: 90px" align="center">
+			<span>Point</span><input id="pointText" size="20px" type="text" value="0"></div></td>
+				
+			<td><div id="Win" style="width: 180px; height: 90px" align="center">
+			<span>Wins</span><input id="winText" size="20px" type="text" value="0"></div></td>
+				
+			<td><div id="Lose" style="width: 180px; height: 90px" align="center">
+			<span>Loses</span><input id="loseText" size="20px" type="text" value="0"></div></td>
+		</tr></table>
+	</div>
+	
+	<div align="center" >
+	<button id="roll" style="height: 50px; width: 100px;" onclick="crap()">Roll the Dice!</button></div>
+</body>
+</html>
